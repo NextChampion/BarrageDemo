@@ -7,14 +7,13 @@
 import React, { Component } from 'react';
 import { StyleSheet, View, DeviceEventEmitter } from 'react-native';
 import PropTypes from 'prop-types';
-import { UIManager } from 'NativeModules';
 
 import BarrageItem from './BarrageItem';
 
 export default class BarrageView extends Component {
   constructor(props) {
     super(props);
-    this.items = [[], []];
+    this.items = [];
   }
 
   static propTypes = {
@@ -30,37 +29,57 @@ export default class BarrageView extends Component {
   };
 
   changeItemState = (a) => {
-    console.log('changeItemState',a);
-    console.log('changeItemState',a);
-    const [line1, line2] = this.items;
-
+    this.items = this.items.map(item => {
+      if (item.id === a.id) {
+        return {...item, isFree: a.isFree};
+      }
+      return item;
+    })
   }
 
-  getLine =  () => {
-    const [line1, line2] = this.items;
-    console.log('lnes2', line1, line2);
-    
-    if(line1.length === 0){
+  getLine =  (b,index) => {
+    if (this.items.length === 0) {
+      return 0
+    }
+    const item = this.items[index];
+    if (item && item.line >= 0) {
+      return item.line;
+    }
+
+    let lastItemOfLine1;
+    let lastItemOfLine2;
+    this.items.forEach(item => {
+      const { id, line, isFree } = item;
+      if (line === 0) {
+        lastItemOfLine1 = item;
+      } else {
+        lastItemOfLine2 = item;
+      }
+    });
+    if(!lastItemOfLine1){
       return 0;
     }
-    const lastIndexOfline1 = line1.length - 1;
-    const lastItem = line1[lastIndexOfline1];
-    console.log('lastitem', lastItem);
-    // UIManager.measure(lastItem.handle, (x, y, width, height, pageX, pageY) => {
-    //   console.log('pageX',pageX);
-    //   return 1;
-    // });
-    
-    console.log('2222222');
-    return 0;
-    
+    if(lastItemOfLine1.isFree){
+      return 0;
+    }
+
+    if(!lastItemOfLine2){
+      return 1;
+    }
+    if(lastItemOfLine2.isFree){
+      return 1;
+    }
+    return 2;
   }
 
   render() {
     const { list } = this.props;
-    const views = list.map((b) => {
-      const line = this.getLine();
-      this.items[line].push({id: b.id, isFree: false});
+    const views = list.map((b,index) => {
+      const line = this.getLine(b,index);
+      if(line === 2) { return null };
+      if (!this.items[index]) {
+        this.items.push({id: b.id, isFree: false, line});
+      }
       return <BarrageItem line={line} key={b.id} data={b}/>
     });
     return (

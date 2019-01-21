@@ -48,7 +48,6 @@ export default class BarrageItem extends Component {
   }
 
   componentWillUnmount() {
-    console.log('[item] componentWillUnmount');
     this.interval && clearInterval(this.interval);
   }
 
@@ -64,7 +63,6 @@ export default class BarrageItem extends Component {
     const { data } = this.props;
     const { id } = data;
     const animatTime = this.getDuration();
-    console.log('begin',animatTime);
 
     this.interval = setInterval(()=>{
       if(this.position < -this.width){
@@ -101,7 +99,6 @@ export default class BarrageItem extends Component {
     const { title } = data;
     this.width = UI.fontSize.regular * title.length;
     const top = this.getTop();
-    console.log('top', top);
     return (
       <View 
         style={[styles.view,{ top, width: this.width, height: 40}]}
@@ -114,30 +111,6 @@ export default class BarrageItem extends Component {
         >
         <Text>{title}</Text>
       </View>
-    )
-    
-    return (
-      <Animated.View
-        ref={a=>this.view =a}
-        removeClippedSubviews={true}
-        style={{
-          // top,
-          left: this.state.left.interpolate({
-            inputRange: [0, 1],
-            outputRange: [UI.size.screenWidth, -UI.size.screenWidth]
-          }),
-        }}
-        onLayout={(a)=>{
-          const handle = findNodeHandle(this.view);
-          this.handle = handle;
-        }}
-        >
-        <View>
-          <Text style={[{width}, styles.text]}>
-            {text}
-          </Text>
-        </View>
-      </Animated.View>
     )
   }
 }

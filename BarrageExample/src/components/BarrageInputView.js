@@ -1,7 +1,6 @@
 
 import React, { Component } from 'react';
 import {
-  Platform,
   StyleSheet,
   Text,
   View,
@@ -10,7 +9,6 @@ import {
   Alert
 } from 'react-native';
 import PropTypes from 'prop-types';
-import { UIManager } from 'NativeModules';
 import UI from '../UI';
 
 const duration = 10;

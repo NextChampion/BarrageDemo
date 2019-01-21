@@ -57,7 +57,7 @@ export default class BarrageView extends Component {
     let lastItemOfLine1;
     let lastItemOfLine2;
     this.items.forEach(item => {
-      const { id, line, isFree } = item;
+      const { line } = item;
       if (line === 0) {
         lastItemOfLine1 = item;
       } else {

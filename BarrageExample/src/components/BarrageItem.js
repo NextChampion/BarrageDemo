@@ -96,6 +96,7 @@ export default class BarrageItem extends Component {
   }
 
   render() {
+    console.debug('[BarrageItem]')
     const { data } = this.props;
     const { title, id } = data;
     this.width = UI.fontSize.regular * title.length;

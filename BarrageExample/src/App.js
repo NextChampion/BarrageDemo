@@ -28,7 +28,7 @@ export default class App extends Component {
   }
 
   render() {
-    console.debug('APP')
+    console.debug('APP');
     return (
       <View style={styles.container}>
         <View style={styles.barrageView}>
@@ -43,7 +43,7 @@ export default class App extends Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    paddingTop: 34,
+    paddingTop: UI.IS_IPHONE_X ? 34 : 24,
     backgroundColor: '#F5FCFF',
     paddingBottom: 44,
   },

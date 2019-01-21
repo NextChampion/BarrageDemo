@@ -14,7 +14,7 @@ import {
 import PropTypes from 'prop-types';
 import UI from '../UI';
 
-const height = UI.size.screenHeight / 9 - UI.lineHeight.regular - 1 ; // 弹道距离顶部的距离
+const height = UI.size.screenHeight / 9 - UI.lineHeight.regular - 1 ; // 弹道距离父视图上边界的距离
 const interval = 10;
 
 export default class BarrageItem extends Component {

@@ -11,8 +11,6 @@ import {
 import PropTypes from 'prop-types';
 import UI from '../UI';
 
-const duration = 10;
-
 export default class BarrageInputView extends Component {
   constructor(props) {
     super(props);
@@ -21,12 +19,10 @@ export default class BarrageInputView extends Component {
 
   static propTypes = {
     onButtonPress: PropTypes.func,
-    onMoved: PropTypes.func,
   };
 
   static defaultProps = {
     onButtonPress: null,
-    onMoved: null,
   };
 
   render() {

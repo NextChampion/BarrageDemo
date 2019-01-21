@@ -29,7 +29,7 @@ export default class BarrageView extends Component {
     this.subscription = DeviceEventEmitter.addListener('changeItemState', this.changeItemState);
   };
 
-  shouldComponentUpdate(props) {
+  shouldComponentUpdate() {
     return true;
   }
 
@@ -44,7 +44,6 @@ export default class BarrageView extends Component {
       }
       return item;
     })
-    
   }
 
   getLine =  (b,index) => {
@@ -65,18 +64,10 @@ export default class BarrageView extends Component {
         lastItemOfLine2 = item;
       }
     });
-    if(!lastItemOfLine1){
-      return 0;
-    }
-    if(lastItemOfLine1.isFree){
-      return 0;
-    }
-    if(!lastItemOfLine2){
-      return 1;
-    }
-    if(lastItemOfLine2.isFree){
-      return 1;
-    }
+    if(!lastItemOfLine1){ return 0 }
+    if(lastItemOfLine1.isFree){ return 0 }
+    if(!lastItemOfLine2){ return 1 }
+    if(lastItemOfLine2.isFree){ return 1 }
     return 2;
   }
 
@@ -121,7 +112,7 @@ export default class BarrageView extends Component {
       if (!this.items[index]) {
         this.items.push({id: b.id, isFree: false, line});
       }
-      return <BarrageItem line={line} key={b.id} data={b}/>
+      return <BarrageItem line={line} key={b.id} data={b} duration={10}/>
     });
     
     return (

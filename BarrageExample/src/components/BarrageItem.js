@@ -102,7 +102,7 @@ export default class BarrageItem extends Component {
     const top = this.getTop();
     return (
       <View 
-        style={[styles.view,{ top, width: this.width}]}
+        style={[styles.view,{ top, width: this.width, left: this.position}]}
         removeClippedSubviews={true}
         ref={a=> this.view =a} 
         onLayout={(a)=>{

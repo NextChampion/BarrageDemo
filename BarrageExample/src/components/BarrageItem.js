@@ -47,6 +47,10 @@ export default class BarrageItem extends Component {
     this.begin();
   }
 
+  shouldComponentUpdate() {
+    return false;
+  }
+
   componentWillUnmount() {
     this.interval && clearInterval(this.interval);
   }

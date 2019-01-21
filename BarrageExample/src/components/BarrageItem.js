@@ -17,7 +17,7 @@ import {
 import PropTypes from 'prop-types';
 import UI from '../UI';
 
-const height = UI.size.screenHeight / 9 - 21 ;
+const height = UI.size.screenHeight / 9 - UI.lineHeight.regular - 1 ;
 
 export default class BarrageItem extends Component {
   constructor(props) {
@@ -125,6 +125,7 @@ const styles = StyleSheet.create({
   text: {
     backgroundColor: 'red',
     fontSize: UI.fontSize.regular,
+    lineHeight: UI.lineHeight.regular,
   },
   welcome: {
     fontSize: 20,

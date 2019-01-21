@@ -9,9 +9,15 @@ const size = {
 
 const fontSize = {
   regular: 16,
+  lineHeight: 20,
+}
+
+const lineHeight = {
+  regular: 20,
 }
 
 export default {
   size,
   fontSize,
+  lineHeight,
 };

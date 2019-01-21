@@ -6,28 +6,22 @@
 
 import React, { Component } from 'react';
 import {
-  Easing,
   StyleSheet,
   Text,
   View,
-  Animated,
-  findNodeHandle,
   DeviceEventEmitter,
 } from 'react-native';
 import PropTypes from 'prop-types';
 import UI from '../UI';
 
-const height = UI.size.screenHeight / 9 - UI.lineHeight.regular - 1 ;
+const height = UI.size.screenHeight / 9 - UI.lineHeight.regular - 1 ; // 弹道距离顶部的距离
+const interval = 10;
 
 export default class BarrageItem extends Component {
   constructor(props) {
     super(props);
-    this.state = {
-      left: new Animated.Value(0),
-    };
     this.position = UI.size.screenWidth;
-    this.handle = null;
-    this.isFreeState = false;
+    this.isFreeState = false; // 是否空闲
   }
 
   static propTypes = {
@@ -57,7 +51,7 @@ export default class BarrageItem extends Component {
   getSpeedOfMillisecond = () => {
     const { duration } = this.props;
     const wholeWidth = UI.size.screenWidth + this.width;
-    const speed = wholeWidth / duration / 100;
+    const speed = wholeWidth / duration / (1000 / interval);
     return speed;
   }
 
@@ -87,7 +81,7 @@ export default class BarrageItem extends Component {
           left: this.position -= speed,
         }
       })
-    }, 10);
+    }, interval);
   }
 
   getTop = () => {
@@ -98,7 +92,7 @@ export default class BarrageItem extends Component {
   render() {
     console.debug('[BarrageItem]')
     const { data } = this.props;
-    const { title, id } = data;
+    const { title } = data;
     this.width = UI.fontSize.regular * title.length;
     const top = this.getTop();
     return (
@@ -106,10 +100,6 @@ export default class BarrageItem extends Component {
         style={[styles.view,{ top, width: this.width, left: this.position}]}
         removeClippedSubviews={true}
         ref={a=> this.view =a} 
-        onLayout={(a)=>{
-          const handle = findNodeHandle(this.view);
-          this.handle = handle;
-        }}
         >
         <Text>{title}</Text>
       </View>

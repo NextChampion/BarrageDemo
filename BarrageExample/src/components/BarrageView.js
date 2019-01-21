@@ -33,6 +33,10 @@ export default class BarrageView extends Component {
     return true;
   }
 
+  componentWillUnmount() {
+    this.subscription.remove();
+  }
+
   changeItemState = (a) => {
     this.items = this.items.map(item => {
       if (item.id === a.id) {

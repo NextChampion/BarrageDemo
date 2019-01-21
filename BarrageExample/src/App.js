@@ -28,6 +28,7 @@ export default class App extends Component {
   }
 
   render() {
+    console.debug('APP')
     return (
       <View style={styles.container}>
         <View style={styles.barrageView}>

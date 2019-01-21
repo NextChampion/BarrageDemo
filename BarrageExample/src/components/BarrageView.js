@@ -14,6 +14,7 @@ export default class BarrageView extends Component {
   constructor(props) {
     super(props);
     this.items = [];
+    this.removedItems = [];
   }
 
   static propTypes = {
@@ -28,6 +29,10 @@ export default class BarrageView extends Component {
     this.subscription = DeviceEventEmitter.addListener('changeItemState', this.changeItemState);
   };
 
+  shouldComponentUpdate(props) {
+    return true;
+  }
+
   changeItemState = (a) => {
     this.items = this.items.map(item => {
       if (item.id === a.id) {
@@ -35,6 +40,7 @@ export default class BarrageView extends Component {
       }
       return item;
     })
+    
   }
 
   getLine =  (b,index) => {
@@ -45,7 +51,6 @@ export default class BarrageView extends Component {
     if (item && item.line >= 0) {
       return item.line;
     }
-
     let lastItemOfLine1;
     let lastItemOfLine2;
     this.items.forEach(item => {
@@ -62,7 +67,6 @@ export default class BarrageView extends Component {
     if(lastItemOfLine1.isFree){
       return 0;
     }
-
     if(!lastItemOfLine2){
       return 1;
     }
@@ -72,16 +76,50 @@ export default class BarrageView extends Component {
     return 2;
   }
 
+  getAvaliableList = (list) => {
+    let newList = [];
+    list.forEach(item => {
+      let isInRemovedItems = false;
+      this.removedItems.forEach(b => {
+        if (item.id === b.id) {
+          isInRemovedItems = true;
+        }
+      });
+      if (!isInRemovedItems) {
+        newList.push(item);
+      }
+    })
+    return newList;
+  }
+
+  addItemToRemoevdItems = (b) => {
+    let isInRemovedItems = false;
+    this.removedItems.forEach(item => {
+      if (item.id === b.id) {
+        isInRemovedItems = true;
+      }
+    });
+    if (!isInRemovedItems) {
+      this.removedItems.push(b);
+    }
+  }
+
   render() {
+    console.debug('[BarrageView]')
     const { list } = this.props;
-    const views = list.map((b,index) => {
+    const avaliableList = this.getAvaliableList(list);
+    const views = avaliableList.map((b,index) => {
       const line = this.getLine(b,index);
-      if(line === 2) { return null };
+      if(line === 2) { 
+        this.addItemToRemoevdItems(b);
+        return null; 
+      };
       if (!this.items[index]) {
         this.items.push({id: b.id, isFree: false, line});
       }
       return <BarrageItem line={line} key={b.id} data={b}/>
     });
+    
     return (
       <View
         pointerEvents='none'

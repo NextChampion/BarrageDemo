@@ -55,19 +55,17 @@ export default class BarrageItem extends Component {
     this.interval && clearInterval(this.interval);
   }
 
-  getDuration = () => {
+  getSpeedOfMillisecond = () => {
     const { duration } = this.props;
     const wholeWidth = UI.size.screenWidth + this.width;
-    const speed = wholeWidth / duration;
-    const time = duration / speed;
-    return time;
+    const speed = wholeWidth / duration / 100;
+    return speed;
   }
 
   begin() {
     const { data } = this.props;
     const { id } = data;
-    const animatTime = this.getDuration();
-
+    const speed = this.getSpeedOfMillisecond();
     this.interval = setInterval(()=>{
       if(this.position < -this.width){
         this.interval && clearInterval(this.interval);
@@ -87,10 +85,10 @@ export default class BarrageItem extends Component {
       }
       this.view.setNativeProps({
         style:{
-          left: this.position -= 1,
+          left: this.position -= speed,
         }
       })
-    }, animatTime);
+    }, 10);
   }
 
   getTop = () => {
@@ -100,7 +98,7 @@ export default class BarrageItem extends Component {
 
   render() {
     const { data } = this.props;
-    const { title } = data;
+    const { title, id } = data;
     this.width = UI.fontSize.regular * title.length;
     const top = this.getTop();
     return (

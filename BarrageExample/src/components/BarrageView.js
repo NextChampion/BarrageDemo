@@ -5,7 +5,7 @@
  */
 
 import React, { Component } from 'react';
-import { StyleSheet, View } from 'react-native';
+import { StyleSheet, View, DeviceEventEmitter } from 'react-native';
 import PropTypes from 'prop-types';
 import { UIManager } from 'NativeModules';
 
@@ -25,6 +25,17 @@ export default class BarrageView extends Component {
     list: [],
   }
 
+  componentDidMount() {
+    this.subscription = DeviceEventEmitter.addListener('changeItemState', this.changeItemState);
+  };
+
+  changeItemState = (a) => {
+    console.log('changeItemState',a);
+    console.log('changeItemState',a);
+    const [line1, line2] = this.items;
+
+  }
+
   getLine =  () => {
     const [line1, line2] = this.items;
     console.log('lnes2', line1, line2);
@@ -35,10 +46,10 @@ export default class BarrageView extends Component {
     const lastIndexOfline1 = line1.length - 1;
     const lastItem = line1[lastIndexOfline1];
     console.log('lastitem', lastItem);
-    UIManager.measure(lastItem.handle, (x, y, width, height, pageX, pageY) => {
-      console.log('pageX',pageX);
-      return 1;
-    });
+    // UIManager.measure(lastItem.handle, (x, y, width, height, pageX, pageY) => {
+    //   console.log('pageX',pageX);
+    //   return 1;
+    // });
     
     console.log('2222222');
     return 0;
@@ -49,8 +60,8 @@ export default class BarrageView extends Component {
     const { list } = this.props;
     const views = list.map((b) => {
       const line = this.getLine();
-      console.log('line', line);
-      return <BarrageItem ref={a => this.items[line].push(a)} line={line} key={b.id} text={b.title}/>
+      this.items[line].push({id: b.id, isFree: false});
+      return <BarrageItem line={line} key={b.id} data={b}/>
     });
     return (
       <View

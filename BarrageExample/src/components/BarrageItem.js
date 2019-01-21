@@ -12,6 +12,7 @@ import {
   View,
   Animated,
   findNodeHandle,
+  DeviceEventEmitter,
 } from 'react-native';
 import PropTypes from 'prop-types';
 import { UIManager } from 'NativeModules';
@@ -27,16 +28,17 @@ export default class BarrageItem extends Component {
     };
     this.position = UI.size.screenWidth;
     this.handle = null;
+    this.isFreeState = false;
   }
 
   static propTypes = {
-    text: PropTypes.string,
+    data: PropTypes.object,
     duration: PropTypes.number,
     line: PropTypes.number,
   }
 
   static defaultProps = {
-    text: '',
+    data: {},
     duration: 10,
     line: 0,
   }
@@ -47,49 +49,62 @@ export default class BarrageItem extends Component {
 
   componentWillUnmount() {
     console.log('[item] componentWillUnmount');
-    
-    clearInterval(this.interval);
+    this.interval && clearInterval(this.interval);
+  }
+
+  getDuration = () => {
+    const { duration } = this.props;
+    const wholeWidth = UI.size.screenWidth + this.width;
+    const speed = wholeWidth / duration;
+    const time = duration / speed;
+    return time;
   }
 
   begin() {
-    console.log(' begin');
+    const { data } = this.props;
+    const { id } = data;
+    const animatTime = this.getDuration();
+    console.log('begin',animatTime);
+
     this.interval = setInterval(()=>{
+      if(this.position < -this.width){
+        this.interval && clearInterval(this.interval);
+        return;
+      }
+      const marginRight = UI.size.screenWidth - this.position;
+      if(marginRight > this.width + 32) {
+        if(!this.isFreeState) {
+          this.isFreeState = true;
+          DeviceEventEmitter.emit('changeItemState',{id, isFree:true});
+        }
+      } else {
+        if(this.isFreeState) {
+          this.isFreeState = false;
+          DeviceEventEmitter.emit('changeItemState',{id, isFree:false});
+        }
+      }
       this.view.setNativeProps({
         style:{
           left: this.position -= 1,
         }
       })
-    }, 10);
-    return;
-    
-
-
-
-
-    const { duration } = this.props;
-    Animated.timing(this.state.left, {
-      toValue: 1,
-      duration: duration * 1000,
-      easing: Easing.linear
-    }).start();
+    }, animatTime);
   }
 
-  getTop = (min,max) => {
+  getTop = () => {
     const { line } = this.props;
     return height * line;
-    var Range = max - min;
-    var Rand = Math.random();
-    return (min + Math.round(Rand * Range));
   }
 
   render() {
-    const { text} = this.props;
-    const width = UI.fontSize.regular * text.length;
-    const top = this.getTop(1,10);
+    const { data } = this.props;
+    const { title } = data;
+    this.width = UI.fontSize.regular * title.length;
+    const top = this.getTop();
     console.log('top', top);
     return (
       <View 
-        style={{overflow: 'hidden'}}
+        style={[styles.view,{ top, width: this.width, height: 40}]}
         removeClippedSubviews={true}
         ref={a=> this.view =a} 
         onLayout={(a)=>{
@@ -97,7 +112,7 @@ export default class BarrageItem extends Component {
           this.handle = handle;
         }}
         >
-        <Text>{text}</Text>
+        <Text>{title}</Text>
       </View>
     )
     
@@ -128,6 +143,10 @@ export default class BarrageItem extends Component {
 }
 
 const styles = StyleSheet.create({
+  view: {
+    overflow: 'hidden', 
+    position: 'absolute',
+  },
   text: {
     backgroundColor: 'red',
     fontSize: UI.fontSize.regular,

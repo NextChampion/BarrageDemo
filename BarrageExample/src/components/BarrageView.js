@@ -46,7 +46,7 @@ export default class BarrageView extends Component {
     })
   }
 
-  getLine =  (b,index) => {
+  getIndexOfLine =  (b,index) => {
     if (this.items.length === 0) {
       return 0
     }
@@ -104,7 +104,7 @@ export default class BarrageView extends Component {
     const { list } = this.props;
     const avaliableList = this.getAvaliableList(list);
     const views = avaliableList.map((b,index) => {
-      const line = this.getLine(b,index);
+      const line = this.getIndexOfLine(b,index);
       if(line === 2) { 
         this.addItemToRemoevdItems(b);
         return null; 

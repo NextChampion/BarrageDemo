@@ -15,10 +15,9 @@ import {
   DeviceEventEmitter,
 } from 'react-native';
 import PropTypes from 'prop-types';
-import { UIManager } from 'NativeModules';
 import UI from '../UI';
 
-const height = 40;
+const height = UI.size.screenHeight / 9 - 21 ;
 
 export default class BarrageItem extends Component {
   constructor(props) {

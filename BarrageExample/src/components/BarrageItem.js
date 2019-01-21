@@ -101,7 +101,7 @@ export default class BarrageItem extends Component {
     const top = this.getTop();
     return (
       <View 
-        style={[styles.view,{ top, width: this.width, height: 40}]}
+        style={[styles.view,{ top, width: this.width}]}
         removeClippedSubviews={true}
         ref={a=> this.view =a} 
         onLayout={(a)=>{
@@ -119,6 +119,7 @@ const styles = StyleSheet.create({
   view: {
     overflow: 'hidden', 
     position: 'absolute',
+    borderWidth: 1,
   },
   text: {
     backgroundColor: 'red',

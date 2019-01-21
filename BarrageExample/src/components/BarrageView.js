@@ -135,7 +135,7 @@ const styles = StyleSheet.create({
     left: 0,
     right: 0,
     bottom: 0,
-    borderWidth: 1,
+    // borderWidth: 1,
   },
   barrageLine: {
     overflow: 'hidden',

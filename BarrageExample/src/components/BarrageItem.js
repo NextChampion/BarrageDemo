@@ -121,7 +121,7 @@ const styles = StyleSheet.create({
   view: {
     overflow: 'hidden', 
     position: 'absolute',
-    borderWidth: 1,
+    // borderWidth: 1,
   },
   text: {
     backgroundColor: 'red',

@@ -17,14 +17,54 @@ export default class App extends Component {
       data: [],
     };
     this.id = 0;
+    this.data = [
+      '哈喽～～～，大家好',
+      '今天天气不错',
+      '要好好学习天天向上啊',
+      '我是一只来自北方的狼',
+      '程序员牛逼',
+      '阅读是人类进步的阶梯',
+      '从哪里摔倒就从哪里爬起来',
+      '吼吼',
+      '常用链接',
+      '6666',
+      '走你',
+      'iPhone真香',
+      '这波操作我给666',
+      '要开心啊',
+      '机智如我',
+    ]
+  }
+
+  componentDidMount() {
+    this.addBarrage();
+  }
+
+  componentWillUnmount() {
+    clearInterval(this.interval);
+  }
+
+  addBarrage = () => {
+    this.interval = setInterval(() => {
+      this.onButtonPress();
+    }, 3000);
   }
   
-
-  onButtonPress = (text)=> {
+  onButtonPress = ()=> {
     const { data } = this.state;
     this.id = this.id + 1;
+    const text = this.getText();
     data.push({title: text, id: this.id});
     this.setState({data});
+  }
+
+  getText = () => {
+    const number = this.getRundomNumber(this.data.length - 1);
+    return this.data[number];
+  }
+
+  getRundomNumber = (max) => {
+    return Math.floor(Math.random() * (max + 1));
   }
 
   render() {
@@ -34,7 +74,6 @@ export default class App extends Component {
         <View style={styles.barrageView}>
           <BarrageView  list={this.state.data}/>
         </View>
-        <BarrageInputView onButtonPress={this.onButtonPress}/>
       </View>
     );
   }

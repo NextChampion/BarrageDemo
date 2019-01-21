@@ -72,7 +72,7 @@ export default class BarrageItem extends Component {
         return;
       }
       const marginRight = UI.size.screenWidth - this.position;
-      if(marginRight > this.width + 32) {
+      if(marginRight > this.width + (2 * UI.fontSize.regular)) {
         if(!this.isFreeState) {
           this.isFreeState = true;
           DeviceEventEmitter.emit('changeItemState',{id, isFree:true});

@@ -7,18 +7,20 @@
 import React, { Component } from 'react';
 import { StyleSheet, View, DeviceEventEmitter } from 'react-native';
 import PropTypes from 'prop-types';
-
 import BarrageItem from './BarrageItem';
 
 export default class BarrageView extends Component {
   constructor(props) {
     super(props);
+    this.state = {
+      list: [],
+    }
     this.items = [];
     this.removedItems = [];
   }
 
   static propTypes = {
-    list: PropTypes.array,
+    onMessage: PropTypes.array,
     numberOfLines: PropTypes.number,
   }
 
@@ -28,8 +30,14 @@ export default class BarrageView extends Component {
   }
 
   componentDidMount() {
-    this.subscription = DeviceEventEmitter.addListener('changeItemState', this.changeItemState);
+    this.subscription = DeviceEventEmitter.addListener('onStateToFree', this.changeItemStateToFree);
+    this.subscription1 = DeviceEventEmitter.addListener('onStateToOutsideScreen', this.removeItemFromList);
   };
+
+  componentWillReceiveProps(props) {
+    const { onMessage } = this.props;
+    this.addBarrageMessage(onMessage);
+  }
 
   shouldComponentUpdate() {
     return true;
@@ -37,93 +45,80 @@ export default class BarrageView extends Component {
 
   componentWillUnmount() {
     this.subscription.remove();
+    this.subscription1.remove();
   }
 
-  changeItemState = (a) => {
-    this.items = this.items.map(item => {
+  addBarrageMessage = (messageList) => {
+    for (let index = 0; index < messageList.length; index+=1) {
+      const message = messageList[index];
+      const indexOfNewBarrrage = this.getLineIndexOfNewBarrrage();
+      if (indexOfNewBarrrage < 0) {
+        continue;
+      }
+      const { list } = this.state;
+      list.push({...message, indexOfLine: indexOfNewBarrrage, isFree: false});
+      this.setState({ list });
+    }
+  }
+
+  changeItemStateToFree = (a) => {
+    const { list } = this.state;
+    const newList = list.map(item => {
       if (item.id === a.id) {
         return {...item, isFree: a.isFree};
       }
       return item;
+    });
+    this.setState({
+      list: newList,
     })
   }
-  
-  getIndexOfLine =  (b,index) => {
+
+  removeItemFromList = (a) => {
+    const { list } = this.state;
+    const newList = list.filter(item => {
+      return item.id !== a.id;
+    });
+    this.setState({
+      list: newList,
+    })
+  }
+
+  getLineIndexOfNewBarrrage =  () => {
     const { numberOfLines } = this.props;
-    if (this.items.length === 0) {
-      return 0
+    const { list } = this.state;
+    if (list.length === 0) {
+      return 0;
     }
-    const item = this.items[index];
-    if (item && item.line >= 0) {
-      return item.line;
-    }
-    let indexOfLine;
-    for (let i = 0; i < numberOfLines; i+= 1) {
+    for (let i = 0; i < numberOfLines; i += 1) {
       indexOfLine = this.getIndexOfFreeLines(i);
-      if (typeof indexOfLine === 'number' && indexOfLine >= 0) {
+      if (indexOfLine >= 0) {
         return indexOfLine;
       }
     }
-    return numberOfLines;
+    return -1;
   }
 
-  getIndexOfFreeLines(i) {
+  getIndexOfFreeLines = (i) => {
     let lastItemOfLine;
-    this.items.forEach(item => {
-      const { line } = item;
-      if (line === i) {
+    const { list } = this.state;
+    list.forEach(item => {
+      const { indexOfLine } = item;
+      if (indexOfLine === i) {
         lastItemOfLine = item;
       }
     });
     if(!lastItemOfLine) { return i };
     if(lastItemOfLine.isFree) { return i };
-    return null;
-  }
-
-  getAvaliableList = (list) => {
-    let newList = [];
-    list.forEach(item => {
-      let isInRemovedItems = false;
-      this.removedItems.forEach(b => {
-        if (item.id === b.id) {
-          isInRemovedItems = true;
-        }
-      });
-      if (!isInRemovedItems) {
-        newList.push(item);
-      }
-    })
-    return newList;
-  }
-
-  addItemToRemoevdItems = (b) => {
-    let isInRemovedItems = false;
-    this.removedItems.forEach(item => {
-      if (item.id === b.id) {
-        isInRemovedItems = true;
-      }
-    });
-    if (!isInRemovedItems) {
-      this.removedItems.push(b);
-    }
+    return -1;
   }
 
   render() {
     console.debug('[BarrageView]')
-    const { list, numberOfLines } = this.props;
-    const avaliableList = this.getAvaliableList(list);
-    const views = avaliableList.map((b,index) => {
-      const line = this.getIndexOfLine(b,index);
-      if(line === numberOfLines) { 
-        this.addItemToRemoevdItems(b);
-        return null; 
-      };
-      if (!this.items[index]) {
-        this.items.push({id: b.id, isFree: false, line});
-      }
-      return <BarrageItem line={line} key={b.id} data={b} duration={10}/>
+    const { list } = this.state;
+    const views = list.map((b) => {
+      return <BarrageItem line={b.indexOfLine} key={b.id} data={b} duration={10} heightOfLine={25}/>
     });
-    
     return (
       <View
         pointerEvents='none'

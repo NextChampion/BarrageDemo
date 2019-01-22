@@ -29,11 +29,11 @@ export default class BarrageInputView extends Component {
     const { onButtonPress } = this.props;
     return (
       <View style={styles.textInputContainer}>
-        <TextInput placeholder={'请输入弹幕内容'} style={styles.textInput} onChangeText={(text)=>{
+        <TextInput placeholder={'请输入弹幕内容'} style={styles.textInput} onChangeText={(text) => {
           this.textInput = text.trim();
-        }}/>
+        }} />
         <TouchableOpacity
-          onPress={()=>{
+          onPress={() => {
             if (!this.textInput) {
               Alert.alert('请输入内容');
               return;

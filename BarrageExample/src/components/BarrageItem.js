@@ -60,26 +60,26 @@ export default class BarrageItem extends Component {
     const { data } = this.props;
     const { id } = data;
     const speed = this.getSpeedOfMillisecond();
-    this.interval = setInterval(()=>{
-      if(this.position < -this.width){
-        DeviceEventEmitter.emit('onStateToOutsideScreen',{ id });
+    this.interval = setInterval(() => {
+      if (this.position < -this.width) {
+        DeviceEventEmitter.emit('onStateToOutsideScreen', { id });
         this.interval && clearInterval(this.interval);
         return;
       }
       const marginRight = UI.size.screenWidth - this.position;
-      if(marginRight > this.width + (2 * UI.fontSize.regular)) {
-        if(!this.isFreeState) {
+      if (marginRight > this.width + (2 * UI.fontSize.regular)) {
+        if (!this.isFreeState) {
           this.isFreeState = true;
-          DeviceEventEmitter.emit('onStateToFree',{id, isFree:true});
+          DeviceEventEmitter.emit('onStateToFree', { id, isFree: true });
         }
       } else {
-        if(this.isFreeState) {
+        if (this.isFreeState) {
           this.isFreeState = false;
-          DeviceEventEmitter.emit('onStateToFree',{id, isFree:false});
+          DeviceEventEmitter.emit('onStateToFree', { id, isFree: false });
         }
       }
       this.view.setNativeProps({
-        style:{
+        style: {
           left: this.position -= speed,
         }
       })
@@ -98,11 +98,11 @@ export default class BarrageItem extends Component {
     this.width = UI.fontSize.regular * title.length;
     const top = this.getTop();
     return (
-      <View 
-        style={[styles.view,{ top, width: this.width, left: this.position}]}
+      <View
+        style={[styles.view, { top, width: this.width, left: this.position }]}
         removeClippedSubviews={true}
-        ref={a=> this.view =a} 
-        >
+        ref={a => this.view = a}
+      >
         <Text>{title}</Text>
       </View>
     )
@@ -111,7 +111,7 @@ export default class BarrageItem extends Component {
 
 const styles = StyleSheet.create({
   view: {
-    overflow: 'hidden', 
+    overflow: 'hidden',
     position: 'absolute',
     // borderWidth: 1,
   },

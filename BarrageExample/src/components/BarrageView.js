@@ -49,14 +49,14 @@ export default class BarrageView extends Component {
   }
 
   addBarrageMessage = (messageList) => {
-    for (let index = 0; index < messageList.length; index+=1) {
+    for (let index = 0; index < messageList.length; index += 1) {
       const message = messageList[index];
       const indexOfNewBarrrage = this.getLineIndexOfNewBarrrage();
       if (indexOfNewBarrrage < 0) {
         continue;
       }
       const { list } = this.state;
-      list.push({...message, indexOfLine: indexOfNewBarrrage, isFree: false});
+      list.push({ ...message, indexOfLine: indexOfNewBarrrage, isFree: false });
       this.setState({ list });
     }
   }
@@ -65,7 +65,7 @@ export default class BarrageView extends Component {
     const { list } = this.state;
     const newList = list.map(item => {
       if (item.id === a.id) {
-        return {...item, isFree: a.isFree};
+        return { ...item, isFree: a.isFree };
       }
       return item;
     });
@@ -84,7 +84,7 @@ export default class BarrageView extends Component {
     })
   }
 
-  getLineIndexOfNewBarrrage =  () => {
+  getLineIndexOfNewBarrrage = () => {
     const { numberOfLines } = this.props;
     const { list } = this.state;
     if (list.length === 0) {
@@ -108,8 +108,8 @@ export default class BarrageView extends Component {
         lastItemOfLine = item;
       }
     });
-    if(!lastItemOfLine) { return i };
-    if(lastItemOfLine.isFree) { return i };
+    if (!lastItemOfLine) { return i };
+    if (lastItemOfLine.isFree) { return i };
     return -1;
   }
 
@@ -117,14 +117,14 @@ export default class BarrageView extends Component {
     console.debug('[BarrageView]')
     const { list } = this.state;
     const views = list.map((b) => {
-      return <BarrageItem line={b.indexOfLine} key={b.id} data={b} duration={10} heightOfLine={25}/>
+      return <BarrageItem line={b.indexOfLine} key={b.id} data={b} duration={10} heightOfLine={25} />
     });
     return (
       <View
         pointerEvents='none'
         removeClippedSubviews={true}
         style={styles.container}
-        >
+      >
         {views}
       </View>
     )

@@ -47,8 +47,9 @@ export default class BarrageView extends Component {
       return item;
     })
   }
-
+  
   getIndexOfLine =  (b,index) => {
+    const { numberOfLines } = this.props;
     if (this.items.length === 0) {
       return 0
     }
@@ -56,21 +57,27 @@ export default class BarrageView extends Component {
     if (item && item.line >= 0) {
       return item.line;
     }
-    let lastItemOfLine1;
-    let lastItemOfLine2;
+    let indexOfLine;
+    for (let i = 0; i < numberOfLines; i+= 1) {
+      indexOfLine = this.getIndexOfFreeLines(i);
+      if (typeof indexOfLine === 'number' && indexOfLine >= 0) {
+        return indexOfLine;
+      }
+    }
+    return numberOfLines;
+  }
+
+  getIndexOfFreeLines(i) {
+    let lastItemOfLine;
     this.items.forEach(item => {
       const { line } = item;
-      if (line === 0) {
-        lastItemOfLine1 = item;
-      } else {
-        lastItemOfLine2 = item;
+      if (line === i) {
+        lastItemOfLine = item;
       }
     });
-    if(!lastItemOfLine1){ return 0 }
-    if(lastItemOfLine1.isFree){ return 0 }
-    if(!lastItemOfLine2){ return 1 }
-    if(lastItemOfLine2.isFree){ return 1 }
-    return 2;
+    if(!lastItemOfLine) { return i };
+    if(lastItemOfLine.isFree) { return i };
+    return null;
   }
 
   getAvaliableList = (list) => {
@@ -103,11 +110,11 @@ export default class BarrageView extends Component {
 
   render() {
     console.debug('[BarrageView]')
-    const { list } = this.props;
+    const { list, numberOfLines } = this.props;
     const avaliableList = this.getAvaliableList(list);
     const views = avaliableList.map((b,index) => {
       const line = this.getIndexOfLine(b,index);
-      if(line === 2) { 
+      if(line === numberOfLines) { 
         this.addItemToRemoevdItems(b);
         return null; 
       };

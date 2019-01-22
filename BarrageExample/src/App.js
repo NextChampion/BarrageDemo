@@ -72,7 +72,7 @@ export default class App extends Component {
     return (
       <View style={styles.container}>
         <View style={styles.barrageView}>
-          <BarrageView  list={this.state.data}/>
+          <BarrageView  list={this.state.data} numberOfLines={4}/>
         </View>
       </View>
     );
@@ -84,9 +84,11 @@ const styles = StyleSheet.create({
     flex: 1,
     paddingTop: UI.IS_IPHONE_X ? 34 : 24,
     backgroundColor: '#F5FCFF',
-    paddingBottom: 44,
+    paddingBottom: UI.IS_IPHONE_X ? 44 : 0,
   },
   barrageView: {
-    height: UI.size.screenHeight / 9,
+    flex: 1,
+    // height: UI.size.screenHeight / 2,
+    // borderWidth: 1,
   },
 });

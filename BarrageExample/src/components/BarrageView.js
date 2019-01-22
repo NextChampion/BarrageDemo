@@ -15,8 +15,6 @@ export default class BarrageView extends Component {
     this.state = {
       list: [],
     }
-    this.items = [];
-    this.removedItems = [];
   }
 
   static propTypes = {

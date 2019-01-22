@@ -19,10 +19,12 @@ export default class BarrageView extends Component {
 
   static propTypes = {
     list: PropTypes.array,
+    numberOfLines: PropTypes.number,
   }
 
   static defaultProps = {
     list: [],
+    numberOfLines: 2,
   }
 
   componentDidMount() {

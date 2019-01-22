@@ -47,7 +47,7 @@ export default class App extends Component {
   addBarrage = () => {
     this.interval = setInterval(() => {
       this.onButtonPress();
-    }, 100);
+    }, 3000);
   }
 
   onButtonPress = () => {

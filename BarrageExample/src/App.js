@@ -47,15 +47,14 @@ export default class App extends Component {
   addBarrage = () => {
     this.interval = setInterval(() => {
       this.onButtonPress();
-    }, 3000);
+    }, 100);
   }
-  
-  onButtonPress = ()=> {
-    const { data } = this.state;
+
+  onButtonPress = () => {
     this.id = this.id + 1;
     const text = this.getText();
-    data.push({title: text, id: this.id});
-    this.setState({data});
+    const newData = [{ title: text, id: this.id }];
+    this.setState({ data: newData });
   }
 
   getText = () => {
@@ -72,7 +71,7 @@ export default class App extends Component {
     return (
       <View style={styles.container}>
         <View style={styles.barrageView}>
-          <BarrageView  list={this.state.data} numberOfLines={4}/>
+          <BarrageView onMessage={this.state.data} numberOfLines={25} />
         </View>
       </View>
     );

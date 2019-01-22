@@ -14,8 +14,7 @@ import {
 import PropTypes from 'prop-types';
 import UI from '../UI';
 
-const height = UI.size.screenHeight / 9 - UI.lineHeight.regular - 1 ; // 弹道距离父视图上边界的距离
-const interval = 10;
+const interval = 30;  // 动画执行的频率，数值越小刷新越快 单位：ms
 
 export default class BarrageItem extends Component {
   constructor(props) {
@@ -28,12 +27,14 @@ export default class BarrageItem extends Component {
     data: PropTypes.object,
     duration: PropTypes.number,
     line: PropTypes.number,
+    heightOfLine: PropTypes.number,
   }
 
   static defaultProps = {
     data: {},
     duration: 10,
     line: 0,
+    heightOfLine: UI.size.screenHeight / 9 - UI.lineHeight.regular - 1, // 弹道距离父视图上边界的距离
   }
 
   componentDidMount() {
@@ -51,7 +52,7 @@ export default class BarrageItem extends Component {
   getSpeedOfMillisecond = () => {
     const { duration } = this.props;
     const wholeWidth = UI.size.screenWidth + this.width;
-    const speed = wholeWidth / duration / (1000 / interval);
+    const speed = wholeWidth / duration / 1000 * interval;
     return speed;
   }
 
@@ -61,6 +62,7 @@ export default class BarrageItem extends Component {
     const speed = this.getSpeedOfMillisecond();
     this.interval = setInterval(()=>{
       if(this.position < -this.width){
+        DeviceEventEmitter.emit('onStateToOutsideScreen',{ id });
         this.interval && clearInterval(this.interval);
         return;
       }
@@ -68,12 +70,12 @@ export default class BarrageItem extends Component {
       if(marginRight > this.width + (2 * UI.fontSize.regular)) {
         if(!this.isFreeState) {
           this.isFreeState = true;
-          DeviceEventEmitter.emit('changeItemState',{id, isFree:true});
+          DeviceEventEmitter.emit('onStateToFree',{id, isFree:true});
         }
       } else {
         if(this.isFreeState) {
           this.isFreeState = false;
-          DeviceEventEmitter.emit('changeItemState',{id, isFree:false});
+          DeviceEventEmitter.emit('onStateToFree',{id, isFree:false});
         }
       }
       this.view.setNativeProps({
@@ -85,8 +87,8 @@ export default class BarrageItem extends Component {
   }
 
   getTop = () => {
-    const { line } = this.props;
-    return height * line;
+    const { line, heightOfLine } = this.props;
+    return heightOfLine * line;
   }
 
   render() {

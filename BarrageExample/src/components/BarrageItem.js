@@ -38,7 +38,7 @@ export default class BarrageItem extends Component {
   }
 
   componentDidMount() {
-    this.begin();
+    this.move();
   }
 
   shouldComponentUpdate() {
@@ -56,7 +56,7 @@ export default class BarrageItem extends Component {
     return speed;
   }
 
-  begin() {
+  move() {
     const { data } = this.props;
     const { id } = data;
     const speed = this.getSpeedOfMillisecond();

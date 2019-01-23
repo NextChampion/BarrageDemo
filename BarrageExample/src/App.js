@@ -37,22 +37,24 @@ export default class App extends Component {
   }
 
   componentDidMount() {
-    this.addBarrage();
+    this.addBarrageWithInterval();
   }
 
   componentWillUnmount() {
     clearInterval(this.interval);
   }
 
-  addBarrage = () => {
+  addBarrageWithInterval = () => {
     this.interval = setInterval(() => {
-      this.onButtonPress();
+      this.id = this.id + 1;
+      const text = this.getText();
+      const newData = [{ title: text, id: this.id }];
+      this.setState({ data: newData });
     }, 3000);
   }
 
-  onButtonPress = () => {
+  onButtonPress = (text) => {
     this.id = this.id + 1;
-    const text = this.getText();
     const newData = [{ title: text, id: this.id }];
     this.setState({ data: newData });
   }
@@ -71,8 +73,9 @@ export default class App extends Component {
     return (
       <View style={styles.container}>
         <View style={styles.barrageView}>
-          <BarrageView onMessage={this.state.data} numberOfLines={25} />
+          <BarrageView newMessages={this.state.data} numberOfLines={25} />
         </View>
+        <BarrageInputView onButtonPress={this.onButtonPress}/>
       </View>
     );
   }

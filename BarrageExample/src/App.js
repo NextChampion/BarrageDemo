@@ -5,8 +5,9 @@
  */
 
 import React, { Component } from 'react';
-import { StyleSheet, View } from 'react-native';
+import { StyleSheet, View, Text } from 'react-native';
 import BarrageView from './components/BarrageView';
+import BarrageMoveView from './components/BarrageMoveView';
 import BarrageInputView from './components/BarrageInputView';
 import UI from './UI';
 
@@ -41,16 +42,26 @@ export default class App extends Component {
   }
 
   componentWillUnmount() {
-    clearInterval(this.interval);
+    this.interval && clearInterval(this.interval);
+    this.interval1 && clearInterval(this.interval1);
   }
 
   addBarrageWithInterval = () => {
     this.interval = setInterval(() => {
       this.id = this.id + 1;
+      if (this.id > 500) {
+        clearInterval(this.interval);
+        this.interval1 = setInterval(() => {
+          this.id = this.id + 1;
+          const text = this.getText();
+          const newData = [{ title: text, id: this.id }];
+          this.setState({ data: newData });
+        }, 3000);
+      }
       const text = this.getText();
       const newData = [{ title: text, id: this.id }];
       this.setState({ data: newData });
-    }, 3000);
+    }, 100);
   }
 
   onButtonPress = (text) => {
@@ -72,8 +83,13 @@ export default class App extends Component {
     console.debug('APP');
     return (
       <View style={styles.container}>
+        <Text>BarrageView + BarrageMovableItem</Text>
         <View style={styles.barrageView}>
-          <BarrageView newMessages={this.state.data} numberOfLines={25} />
+          <BarrageView newMessages={this.state.data} numberOfLines={10} />
+        </View>
+        <Text>BarrageMoveView + BarrageItem</Text>
+        <View style={styles.barrageView}>
+          <BarrageMoveView newMessages={this.state.data} numberOfLines={10} />
         </View>
         <BarrageInputView onButtonPress={this.onButtonPress}/>
       </View>

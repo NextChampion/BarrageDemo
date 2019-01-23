@@ -91,7 +91,7 @@ export default class App extends Component {
         <View style={styles.barrageView}>
           <BarrageMoveView newMessages={this.state.data} numberOfLines={10} />
         </View>
-        <BarrageInputView onButtonPress={this.onButtonPress}/>
+        <BarrageInputView onButtonPress={this.onButtonPress} />
       </View>
     );
   }

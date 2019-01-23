@@ -18,12 +18,12 @@ export default class BarrageView extends Component {
   }
 
   static propTypes = {
-    onMessage: PropTypes.array,
+    newMessages: PropTypes.array,
     numberOfLines: PropTypes.number,
   }
 
   static defaultProps = {
-    list: [],
+    newMessages: [],
     numberOfLines: 2,
   }
 
@@ -33,8 +33,8 @@ export default class BarrageView extends Component {
   };
 
   componentWillReceiveProps(props) {
-    const { onMessage } = this.props;
-    this.addBarrageMessage(onMessage);
+    const { newMessages } = props;
+    this.addBarrageMessage(newMessages);
   }
 
   shouldComponentUpdate() {
@@ -118,11 +118,7 @@ export default class BarrageView extends Component {
       return <BarrageItem line={b.indexOfLine} key={b.id} data={b} duration={10} heightOfLine={25} />
     });
     return (
-      <View
-        pointerEvents='none'
-        removeClippedSubviews={true}
-        style={styles.container}
-      >
+      <View style={styles.container}>
         {views}
       </View>
     )

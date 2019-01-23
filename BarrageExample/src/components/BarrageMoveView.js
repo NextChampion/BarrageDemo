@@ -7,7 +7,7 @@
 import React, { Component } from 'react';
 import { StyleSheet, View, DeviceEventEmitter } from 'react-native';
 import PropTypes from 'prop-types';
-import BarrageMoveItem from './BarrageMoveItem';
+import BarrageItem from './BarrageItem';
 import UI from '../UI';
 
 export default class BarrageMoveView extends Component {
@@ -54,7 +54,7 @@ export default class BarrageMoveView extends Component {
     this.interval = setInterval(() => {
       for (let index = 0; index < this.barrages.length; index++) {
         const b = this.barrages[index];
-        b.left-=1;
+        b.left -= 1;
         if (b.left < UI.size.screenWidth - b.ref.width - UI.fontSize.regular * 2) {
           if (!b.isFree) {
             DeviceEventEmitter.emit('onStateToFree1', { id: b.id, isFree: true });
@@ -139,8 +139,8 @@ export default class BarrageMoveView extends Component {
   render() {
     console.debug('[BarrageView]')
     const { list } = this.state;
-    const views = list.map((b,index) => {
-      return <BarrageMoveItem ref={a => {
+    const views = list.map((b, index) => {
+      return <BarrageItem ref={a => {
         if (a) {
           this.barrages[index].ref = a
         }

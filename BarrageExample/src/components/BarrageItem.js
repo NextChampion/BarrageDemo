@@ -16,7 +16,7 @@ import UI from '../UI';
 
 const interval = 30;  // 动画执行的频率，数值越小刷新越快 单位：ms
 
-export default class BarrageMoveItem extends Component {
+export default class BarrageItem extends Component {
   constructor(props) {
     super(props);
     this.position = UI.size.screenWidth;

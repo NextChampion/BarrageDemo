@@ -16,7 +16,7 @@ import UI from '../UI';
 
 const interval = 30;  // 动画执行的频率，数值越小刷新越快 单位：ms
 
-export default class BarrageItem extends Component {
+export default class BarrageMovableItem extends Component {
   constructor(props) {
     super(props);
     this.position = UI.size.screenWidth;
@@ -49,7 +49,9 @@ export default class BarrageItem extends Component {
     this.interval && clearInterval(this.interval);
   }
 
+  // 控制移动的速度
   getSpeedOfMillisecond = () => {
+    return 1;
     const { duration } = this.props;
     const wholeWidth = UI.size.screenWidth + this.width;
     const speed = wholeWidth / duration / 1000 * interval;

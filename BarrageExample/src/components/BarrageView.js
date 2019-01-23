@@ -7,7 +7,7 @@
 import React, { Component } from 'react';
 import { StyleSheet, View, DeviceEventEmitter } from 'react-native';
 import PropTypes from 'prop-types';
-import BarrageItem from './BarrageItem';
+import BarrageMovableItem from './BarrageMovableItem';
 
 export default class BarrageView extends Component {
   constructor(props) {
@@ -115,7 +115,7 @@ export default class BarrageView extends Component {
     console.debug('[BarrageView]')
     const { list } = this.state;
     const views = list.map((b) => {
-      return <BarrageItem line={b.indexOfLine} key={b.id} data={b} duration={10} heightOfLine={25} />
+      return <BarrageMovableItem line={b.indexOfLine} key={b.id} data={b} duration={10} heightOfLine={25} />
     });
     return (
       <View style={styles.container}>

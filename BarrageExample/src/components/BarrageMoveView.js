@@ -54,7 +54,7 @@ export default class BarrageMoveView extends Component {
     this.interval = setInterval(() => {
       for (let index = 0; index < this.barrages.length; index++) {
         const b = this.barrages[index];
-        b.left--;
+        b.left-=1;
         if (b.left < UI.size.screenWidth - b.ref.width - UI.fontSize.regular * 2) {
           if (!b.isFree) {
             DeviceEventEmitter.emit('onStateToFree1', { id: b.id, isFree: true });
@@ -71,7 +71,7 @@ export default class BarrageMoveView extends Component {
           }
         })
       }
-    }, 10);
+    }, 30);
 
 
   }

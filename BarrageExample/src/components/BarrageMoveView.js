@@ -22,11 +22,13 @@ export default class BarrageMoveView extends Component {
   static propTypes = {
     newMessages: PropTypes.array,
     numberOfLines: PropTypes.number,
+    speed: PropTypes.number,
   }
 
   static defaultProps = {
     newMessages: [],
     numberOfLines: 2,
+    speed: 1,
   }
 
   componentDidMount() {
@@ -51,10 +53,11 @@ export default class BarrageMoveView extends Component {
   }
 
   move = () => {
+    const { speed } = this.props;
     this.interval = setInterval(() => {
       for (let index = 0; index < this.barrages.length; index++) {
         const b = this.barrages[index];
-        b.left -= 1;
+        b.left -= speed;
         if (b.left < UI.size.screenWidth - b.ref.width - UI.fontSize.regular * 2) {
           if (!b.isFree) {
             DeviceEventEmitter.emit('onStateToFree1', { id: b.id, isFree: true });

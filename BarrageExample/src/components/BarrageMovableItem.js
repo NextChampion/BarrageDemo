@@ -25,14 +25,14 @@ export default class BarrageMovableItem extends Component {
 
   static propTypes = {
     data: PropTypes.object,
-    duration: PropTypes.number,
+    speed: PropTypes.number,
     line: PropTypes.number,
     heightOfLine: PropTypes.number,
   }
 
   static defaultProps = {
     data: {},
-    duration: 10,
+    speed: 1,
     line: 0,
     heightOfLine: UI.size.screenHeight / 9 - UI.lineHeight.regular - 1, // 弹道距离父视图上边界的距离
   }
@@ -51,13 +51,11 @@ export default class BarrageMovableItem extends Component {
 
   // 控制移动的速度
   getSpeedOfMillisecond = () => {
-    return 1;
-    const { duration } = this.props;
-    const wholeWidth = UI.size.screenWidth + this.width;
-    const speed = wholeWidth / duration / 1000 * interval;
+    const { speed } = this.props;
     return speed;
   }
 
+  // 移动
   move() {
     const { data } = this.props;
     const { id } = data;
@@ -88,6 +86,7 @@ export default class BarrageMovableItem extends Component {
     }, interval);
   }
 
+  // 计算当前弹幕距离顶部的高度
   getTop = () => {
     const { line, heightOfLine } = this.props;
     return heightOfLine * line;

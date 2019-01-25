@@ -46,6 +46,7 @@ export default class BarrageView extends Component {
     this.subscription1.remove();
   }
 
+  // 将新来的消息添加到数据源里 新来的消息有可能被丢弃
   addBarrageMessage = (messageList) => {
     for (let index = 0; index < messageList.length; index += 1) {
       const message = messageList[index];
@@ -59,6 +60,7 @@ export default class BarrageView extends Component {
     }
   }
 
+  // 修改某一个item后面为空闲，可以在后天添加下一个弹幕
   changeItemStateToFree = (a) => {
     const { list } = this.state;
     const newList = list.map(item => {
@@ -72,6 +74,7 @@ export default class BarrageView extends Component {
     })
   }
 
+  // 删除已经移动到屏幕外的item
   removeItemFromList = (a) => {
     const { list } = this.state;
     const newList = list.filter(item => {
@@ -82,6 +85,7 @@ export default class BarrageView extends Component {
     })
   }
 
+  // 获取新来的弹幕消息将要放入第几行， -1 则为丢弃
   getLineIndexOfNewBarrrage = () => {
     const { numberOfLines } = this.props;
     const { list } = this.state;
@@ -97,6 +101,7 @@ export default class BarrageView extends Component {
     return -1;
   }
 
+  // 获取当前第几行处于空闲状态， 如果为-1 则没有空闲行
   getIndexOfFreeLines = (i) => {
     let lastItemOfLine;
     const { list } = this.state;

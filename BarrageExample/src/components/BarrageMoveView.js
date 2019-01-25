@@ -52,6 +52,7 @@ export default class BarrageMoveView extends Component {
     this.interval && clearInterval(this.interval);
   }
 
+  // 平移
   move = () => {
     const { speed } = this.props;
     this.interval = setInterval(() => {
@@ -75,10 +76,9 @@ export default class BarrageMoveView extends Component {
         })
       }
     }, 30);
-
-
   }
 
+  // 添加数据
   addBarrageMessage = (messageList) => {
     for (let index = 0; index < messageList.length; index += 1) {
       const message = messageList[index];
@@ -91,6 +91,7 @@ export default class BarrageMoveView extends Component {
     }
   }
 
+  // 修改是否空闲的状态值
   changeItemStateToFree = (a) => {
     this.barrages = this.barrages.map(item => {
       if (item.id === a.id) {
@@ -101,8 +102,9 @@ export default class BarrageMoveView extends Component {
     this.setState({
       list: this.barrages,
     })
-  }
+  } 
 
+  // 删除已经移动到屏幕外的数据
   removeItemFromList = (a) => {
     this.barrages = this.barrages.filter(item => {
       return item.id !== a.id;
@@ -112,6 +114,7 @@ export default class BarrageMoveView extends Component {
     })
   }
 
+  // 获取新弹幕的轨道值 如果为-1 说明当前没有空闲轨道，丢弃当前弹幕
   getLineIndexOfNewBarrrage = () => {
     const { numberOfLines } = this.props;
     if (this.barrages.length === 0) {
@@ -126,6 +129,7 @@ export default class BarrageMoveView extends Component {
     return -1;
   }
 
+  // 获取空闲弹道的index 如果为-1 则没有空闲弹道
   getIndexOfFreeLines = (i) => {
     let lastItemOfLine;
     this.barrages.forEach(item => {

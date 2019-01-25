@@ -89,7 +89,7 @@ export default class App extends Component {
         </View>
         <Text>BarrageMoveView + BarrageItem</Text>
         <View style={styles.barrageView}>
-          <BarrageMoveView newMessages={this.state.data} numberOfLines={10} speed={2} />
+          <BarrageMoveView newMessages={this.state.data} numberOfLines={10} speed={1} />
         </View>
         <BarrageInputView onButtonPress={this.onButtonPress} />
       </View>

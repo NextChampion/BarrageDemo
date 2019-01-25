@@ -75,17 +75,17 @@ export default class BarrageMoveView extends Component {
     this.interval = setInterval(() => {
       for (let index = 0; index < this.barrages.length; index++) {
         const b = this.barrages[index];
-        b.left -= speed;
-        if (b.left < UI.size.screenWidth - b.ref.width - UI.fontSize.regular * 2) {
+        b.position.left -= speed;
+        const newLeft = b.position.left;
+        if (newLeft < UI.size.screenWidth - b.ref.width - UI.fontSize.regular * 2) {
           if (!b.isFree) {
             DeviceEventEmitter.emit('onStateToFree1', { id: b.id, isFree: true });
           }
         }
-        if (b.left < - b.ref.width) {
+        if (newLeft < - b.ref.width) {
           DeviceEventEmitter.emit('onStateToOutsideScreen1', { id: b.id });
           continue;
         }
-        const newLeft = b.left;
         b.ref.view.setNativeProps({
           style: {
             left: newLeft,
@@ -103,7 +103,8 @@ export default class BarrageMoveView extends Component {
       if (indexOfNewBarrrage < 0) {
         continue;
       }
-      this.barrages.push({ ...message, indexOfLine: indexOfNewBarrrage, isFree: false, left: UI.size.screenWidth });
+      const barrage = { ...message, indexOfLine: indexOfNewBarrrage, isFree: false, position: { left: UI.size.screenWidth } };
+      this.barrages.push(barrage);
       this.setState({ list: this.barrages });
     }
   }

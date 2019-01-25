@@ -23,18 +23,20 @@ export default class BarrageMoveView extends Component {
     newMessages: PropTypes.array,
     numberOfLines: PropTypes.number,
     speed: PropTypes.number,
+    animatedType: PropTypes.number,
   }
 
   static defaultProps = {
     newMessages: [],
     numberOfLines: 2,
     speed: 1,
+    animatedType: 1,
   }
 
   componentDidMount() {
     this.subscription = DeviceEventEmitter.addListener('onStateToFree1', this.changeItemStateToFree);
     this.subscription1 = DeviceEventEmitter.addListener('onStateToOutsideScreen1', this.removeItemFromList);
-    this.move();
+    this.startMove();
   };
 
   componentWillReceiveProps(props) {
@@ -50,6 +52,21 @@ export default class BarrageMoveView extends Component {
     this.subscription.remove();
     this.subscription1.remove();
     this.interval && clearInterval(this.interval);
+  }
+
+  startMove = () => {
+    const { animatedType } = this.props;
+    switch (animatedType) {
+      case 1: // 平移
+        this.move();
+        break;
+      case 2: // 可以设置其他移动效果
+        this.move();
+        break;
+      default:
+        this.move();
+        break;
+    }
   }
 
   // 平移

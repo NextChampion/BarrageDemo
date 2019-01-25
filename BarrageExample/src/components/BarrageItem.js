@@ -25,34 +25,18 @@ export default class BarrageItem extends Component {
 
   static propTypes = {
     data: PropTypes.object,
-    duration: PropTypes.number,
     line: PropTypes.number,
     heightOfLine: PropTypes.number,
   }
 
   static defaultProps = {
     data: {},
-    duration: 10,
     line: 0,
     heightOfLine: UI.size.screenHeight / 9 - UI.lineHeight.regular - 1, // 弹道距离父视图上边界的距离
   }
 
-  componentDidMount() {
-  }
-
   shouldComponentUpdate() {
     return false;
-  }
-
-  componentWillUnmount() {
-    this.interval && clearInterval(this.interval);
-  }
-
-  getSpeedOfMillisecond = () => {
-    const { duration } = this.props;
-    const wholeWidth = UI.size.screenWidth + this.width;
-    const speed = wholeWidth / duration / 1000 * interval;
-    return speed;
   }
 
   getTop = () => {

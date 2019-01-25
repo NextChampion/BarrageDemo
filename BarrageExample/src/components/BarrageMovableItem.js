@@ -28,6 +28,7 @@ export default class BarrageMovableItem extends Component {
     speed: PropTypes.number,
     line: PropTypes.number,
     heightOfLine: PropTypes.number,
+    animatedType: PropTypes.number,
   }
 
   static defaultProps = {
@@ -35,10 +36,11 @@ export default class BarrageMovableItem extends Component {
     speed: 1,
     line: 0,
     heightOfLine: UI.size.screenHeight / 9 - UI.lineHeight.regular - 1, // 弹道距离父视图上边界的距离
+    animatedType: 1,
   }
 
   componentDidMount() {
-    this.move();
+    this.startMove();
   }
 
   shouldComponentUpdate() {
@@ -47,6 +49,19 @@ export default class BarrageMovableItem extends Component {
 
   componentWillUnmount() {
     this.interval && clearInterval(this.interval);
+  }
+
+  startMove = () => {
+    const { animatedType } = this.props;
+    switch (animatedType) {
+      case 1:
+        this.move()
+        break;
+    
+      default:
+        this.move();
+        break;
+    }
   }
 
   // 控制移动的速度

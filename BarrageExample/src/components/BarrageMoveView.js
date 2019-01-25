@@ -164,11 +164,19 @@ export default class BarrageMoveView extends Component {
     console.debug('[BarrageView]')
     const { list } = this.state;
     const views = list.map((b, index) => {
-      return <BarrageItem ref={a => {
-        if (a) {
-          this.barrages[index].ref = a
-        }
-      }} line={b.indexOfLine} key={b.id} data={b} duration={10} heightOfLine={25} />
+      return (
+        <BarrageItem 
+          ref={a => {
+            if (a) { this.barrages[index].ref = a }
+          }} 
+          line={b.indexOfLine} 
+          key={b.id} 
+          data={b} 
+          speed={2}
+          type={2}
+          heightOfLine={25} 
+        />
+      )
     });
     return (
       <View style={styles.container}>

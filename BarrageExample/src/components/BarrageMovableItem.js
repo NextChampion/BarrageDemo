@@ -29,6 +29,7 @@ export default class BarrageMovableItem extends Component {
     line: PropTypes.number,
     heightOfLine: PropTypes.number,
     animatedType: PropTypes.number,
+    type: PropTypes.number,
   }
 
   static defaultProps = {
@@ -37,6 +38,7 @@ export default class BarrageMovableItem extends Component {
     line: 0,
     heightOfLine: UI.size.screenHeight / 9 - UI.lineHeight.regular - 1, // 弹道距离父视图上边界的距离
     animatedType: 1,
+    type: 1,
   }
 
   componentDidMount() {
@@ -107,8 +109,7 @@ export default class BarrageMovableItem extends Component {
     return heightOfLine * line;
   }
 
-  render() {
-    console.debug('[BarrageItem]')
+  renderTextContent = () => {
     const { data } = this.props;
     const { title } = data;
     this.width = UI.fontSize.regular * title.length;
@@ -122,6 +123,20 @@ export default class BarrageMovableItem extends Component {
         <Text>{title}</Text>
       </View>
     )
+  }
+
+  render() {
+    console.debug('[BarrageItem]')
+    const { type } = this.props;
+    switch (type) {
+      case 1:
+        return this.renderTextContent();
+        break;
+      default:
+        return this.renderTextContent();
+        break;
+    }
+   
   }
 }
 

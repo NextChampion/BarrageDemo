@@ -34,7 +34,7 @@ export default class BarrageItem extends Component {
     data: {},
     line: 0,
     heightOfLine: UI.size.screenHeight / 9 - UI.lineHeight.regular - 1, // 弹道距离父视图上边界的距离
-    type: 1, 
+    type: 1,
   }
 
   shouldComponentUpdate() {
@@ -72,9 +72,9 @@ export default class BarrageItem extends Component {
         style={[styles.imageView, { top, width: this.width, left: this.position }]}
         removeClippedSubviews={true}
         ref={a => this.view = a}
-      >   
-        <View style={{flexDirection: 'row', alignItems: 'center'}}>
-          <Image style={styles.image}/>
+      >
+        <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+          <Image style={styles.image} />
           <Text>{title}</Text>
         </View>
       </View>

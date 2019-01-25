@@ -59,7 +59,7 @@ export default class BarrageMovableItem extends Component {
       case 1:
         this.move()
         break;
-    
+
       default:
         this.move();
         break;
@@ -136,7 +136,7 @@ export default class BarrageMovableItem extends Component {
         return this.renderTextContent();
         break;
     }
-   
+
   }
 }
 

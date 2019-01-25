@@ -119,7 +119,7 @@ export default class BarrageMoveView extends Component {
     this.setState({
       list: this.barrages,
     })
-  } 
+  }
 
   // 删除已经移动到屏幕外的数据
   removeItemFromList = (a) => {
@@ -165,16 +165,16 @@ export default class BarrageMoveView extends Component {
     const { list } = this.state;
     const views = list.map((b, index) => {
       return (
-        <BarrageItem 
+        <BarrageItem
           ref={a => {
             if (a) { this.barrages[index].ref = a }
-          }} 
-          line={b.indexOfLine} 
-          key={b.id} 
-          data={b} 
+          }}
+          line={b.indexOfLine}
+          key={b.id}
+          data={b}
           speed={2}
           type={2}
-          heightOfLine={25} 
+          heightOfLine={25}
         />
       )
     });

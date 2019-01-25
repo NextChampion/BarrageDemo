@@ -21,13 +21,14 @@ export default class BarrageItem extends Component {
     super(props);
     this.position = UI.size.screenWidth;
     this.isFreeState = false; // 是否空闲
+    this.width = 0; // 弹幕本身的宽度
   }
 
   static propTypes = {
-    data: PropTypes.object,
-    line: PropTypes.number,
-    heightOfLine: PropTypes.number,
-    type: PropTypes.number,
+    data: PropTypes.object, // 数据
+    line: PropTypes.number, // 弹道位置
+    heightOfLine: PropTypes.number, // 弹道高度
+    type: PropTypes.number, // 弹幕类型
   }
 
   static defaultProps = {

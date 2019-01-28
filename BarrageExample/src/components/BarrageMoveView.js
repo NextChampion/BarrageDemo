@@ -17,6 +17,7 @@ export default class BarrageMoveView extends Component {
             list: [],
         }
         this.barrages = []; // 数据源
+        this.setRefs = this.setRefs.bind(this);
     }
 
     static propTypes = {
@@ -100,7 +101,12 @@ export default class BarrageMoveView extends Component {
             if (indexOfNewBarrrage < 0) {
                 continue;
             }
-            const barrage = { ...message, indexOfLine: indexOfNewBarrrage, isFree: false, position: { left: UI.size.screenWidth } };
+            const barrage = { 
+                ...message, 
+                indexOfLine: indexOfNewBarrrage, 
+                isFree: false, 
+                position: { left: UI.size.screenWidth },
+            };
             if (!this.barrages[indexOfNewBarrrage]) {
                 this.barrages[indexOfNewBarrrage] = [];
             }
@@ -145,6 +151,10 @@ export default class BarrageMoveView extends Component {
         return -1;
     }
 
+    setRefs(a,index,innerIndex) {
+        if (a) { this.barrages[index][innerIndex].ref = a }
+    }
+
     getBarrageItems = () => {
         const { list } = this.state;
         const views = [];
@@ -153,9 +163,7 @@ export default class BarrageMoveView extends Component {
             barrragesOfLine.forEach((b, innerIndex) => {
                 const barrageItem = (
                     <BarrageItem
-                        ref={a => {
-                            if (a) { this.barrages[index][innerIndex].ref = a }
-                        }}
+                        ref={(a) => this.setRefs(a, index,innerIndex)}
                         line={b.indexOfLine}
                         key={b.id}
                         data={b}

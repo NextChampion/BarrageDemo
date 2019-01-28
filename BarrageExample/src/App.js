@@ -49,15 +49,15 @@ export default class App extends Component {
   addBarrageWithInterval = () => {
     this.interval = setInterval(() => {
       this.id = this.id + 1;
-      if (this.id > 500) {
-        clearInterval(this.interval);
-        this.interval1 = setInterval(() => {
-          this.id = this.id + 1;
-          const text = this.getText();
-          const newData = [{ title: text, id: this.id }];
-          this.setState({ data: newData });
-        }, 3000);
-      }
+    //   if (this.id > 500) {
+    //     clearInterval(this.interval);
+    //     this.interval1 = setInterval(() => {
+    //       this.id = this.id + 1;
+    //       const text = this.getText();
+    //       const newData = [{ title: text, id: this.id }];
+    //       this.setState({ data: newData });
+    //     }, 3000);
+    //   }
       const text = this.getText();
       const newData = [{ title: text, id: this.id }];
       this.setState({ data: newData });
@@ -83,15 +83,11 @@ export default class App extends Component {
     console.debug('APP');
     return (
       <View style={styles.container}>
-        <Text>BarrageView + BarrageMovableItem</Text>
-        <View style={styles.barrageView}>
-          <BarrageView newMessages={this.state.data} numberOfLines={10} />
-        </View>
-        <Text>BarrageMoveView + BarrageItem</Text>
         <View style={styles.barrageView}>
           <BarrageMoveView newMessages={this.state.data} numberOfLines={10} speed={1} />
         </View>
         <BarrageInputView onButtonPress={this.onButtonPress} />
+        <View style={{ flex: 1 }}/>
       </View>
     );
   }

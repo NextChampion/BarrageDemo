@@ -16,7 +16,7 @@ export default class BarrageMoveView extends Component {
     this.state = {
       list: [],
     }
-    this.barrages = [];
+    this.barrages = []; // 数据源
   }
 
   static propTypes = {
@@ -34,7 +34,6 @@ export default class BarrageMoveView extends Component {
   }
 
   componentDidMount() {
-    this.subscription = DeviceEventEmitter.addListener('onStateToFree1', this.changeItemStateToFree);
     this.subscription1 = DeviceEventEmitter.addListener('onStateToOutsideScreen1', this.removeItemFromList);
     this.startMove();
   };
@@ -49,7 +48,6 @@ export default class BarrageMoveView extends Component {
   }
 
   componentWillUnmount() {
-    this.subscription.remove();
     this.subscription1.remove();
     this.interval && clearInterval(this.interval);
   }
@@ -73,24 +71,27 @@ export default class BarrageMoveView extends Component {
   move = () => {
     const { speed } = this.props;
     this.interval = setInterval(() => {
-      for (let index = 0; index < this.barrages.length; index++) {
-        const b = this.barrages[index];
-        b.position.left -= speed;
-        const newLeft = b.position.left;
-        if (newLeft < UI.size.screenWidth - b.ref.width - UI.fontSize.regular * 2) {
-          if (!b.isFree) {
-            DeviceEventEmitter.emit('onStateToFree1', { id: b.id, isFree: true });
+      for (let index = 0; index < this.barrages.length; index+= 1) {
+        const barrragesOfLine = this.barrages[index];
+        for (let i = 0; i < barrragesOfLine.length; i+= 1) {
+          const b = barrragesOfLine[i];
+          b.position.left -= speed;
+          const newLeft = b.position.left;
+          if (newLeft < UI.size.screenWidth - b.ref.width - UI.fontSize.regular * 2) {
+            if (!b.isFree) {
+              b.isFree = true;
+            }
           }
-        }
-        if (newLeft < - b.ref.width) {
-          DeviceEventEmitter.emit('onStateToOutsideScreen1', { id: b.id });
-          continue;
-        }
-        b.ref.view.setNativeProps({
-          style: {
-            left: newLeft,
+          if (newLeft < - b.ref.width) {
+            DeviceEventEmitter.emit('onStateToOutsideScreen1', b);
+            continue;
           }
-        })
+          b.ref.view.setNativeProps({
+            style: {
+              left: newLeft,
+            }
+          })
+        }
       }
     }, 30);
   }
@@ -104,24 +105,18 @@ export default class BarrageMoveView extends Component {
         continue;
       }
       const barrage = { ...message, indexOfLine: indexOfNewBarrrage, isFree: false, position: { left: UI.size.screenWidth } };
-      this.barrages.push(barrage);
+      if (!this.barrages[indexOfNewBarrrage]) {
+        this.barrages[indexOfNewBarrrage] = [];
+      }
+      this.barrages[indexOfNewBarrrage].push(barrage);
       this.setState({ list: this.barrages });
     }
   }
 
-  // 修改是否空闲的状态值
-  changeItemStateToFree = (a) => {
-    this.barrages = this.barrages.map(item => {
-      if (item.id === a.id) {
-        return { ...item, isFree: a.isFree };
-      }
-      return item;
-    });
-  }
-
   // 删除已经移动到屏幕外的数据
   removeItemFromList = (a) => {
-    this.barrages = this.barrages.filter(item => {
+    const { indexOfLine } = a;
+    this.barrages[indexOfLine] = this.barrages[indexOfLine].filter(item => {
       return item.id !== a.id;
     });
     this.setState({
@@ -135,37 +130,35 @@ export default class BarrageMoveView extends Component {
     if (this.barrages.length === 0) {
       return 0;
     }
+    if (this.barrages[0].length === 0) {
+      return 0;
+    }
     for (let i = 0; i < numberOfLines; i += 1) {
-      indexOfLine = this.getIndexOfFreeLines(i);
-      if (indexOfLine >= 0) {
-        return indexOfLine;
+      const barragesOfLine = this.barrages[i];
+      if (!barragesOfLine || !barragesOfLine.length) {
+        return i;
+      }
+      const lastItemOfLine = barragesOfLine[barragesOfLine.length - 1]
+      if (!lastItemOfLine) {
+        return i;
+      }
+      if (lastItemOfLine.isFree) {
+        return i;
       }
     }
     return -1;
   }
 
-  // 获取空闲弹道的index 如果为-1 则没有空闲弹道
-  getIndexOfFreeLines = (i) => {
-    let lastItemOfLine;
-    this.barrages.forEach(item => {
-      const { indexOfLine } = item;
-      if (indexOfLine === i) {
-        lastItemOfLine = item;
-      }
-    });
-    if (!lastItemOfLine) { return i };
-    if (lastItemOfLine.isFree) { return i };
-    return -1;
-  }
-
-  render() {
-    console.debug('[BarrageView]')
+  getBarrageItems = () => {
     const { list } = this.state;
-    const views = list.map((b, index) => {
-      return (
+    const views = [];
+    for (let index = 0; index < list.length; index+= 1) {
+      const barrragesOfLine = list[index];
+      barrragesOfLine.forEach((b,innerIndex) => {
+        const barrageItem = (
         <BarrageItem
           ref={a => {
-            if (a) { this.barrages[index].ref = a }
+            if (a) { this.barrages[index][innerIndex].ref = a }
           }}
           line={b.indexOfLine}
           key={b.id}
@@ -173,12 +166,20 @@ export default class BarrageMoveView extends Component {
           speed={2}
           type={2}
           heightOfLine={25}
-        />
-      )
-    });
+          />
+        )
+        views.push(barrageItem);
+      })
+    }
+    return views;
+  }
+
+  render() {
+    console.debug('[BarrageView]')
+    const barrageItems = this.getBarrageItems();
     return (
       <View style={styles.container}>
-        {views}
+        {barrageItems}
       </View>
     )
   }

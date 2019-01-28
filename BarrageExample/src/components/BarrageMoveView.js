@@ -117,9 +117,6 @@ export default class BarrageMoveView extends Component {
       }
       return item;
     });
-    this.setState({
-      list: this.barrages,
-    })
   }
 
   // 删除已经移动到屏幕外的数据

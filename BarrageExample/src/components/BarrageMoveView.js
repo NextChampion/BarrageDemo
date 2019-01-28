@@ -43,10 +43,6 @@ export default class BarrageMoveView extends Component {
     this.addBarrageMessage(newMessages);
   }
 
-  shouldComponentUpdate() {
-    return true;
-  }
-
   componentWillUnmount() {
     this.subscription1.remove();
     this.interval && clearInterval(this.interval);

@@ -111,8 +111,8 @@ export default class BarrageMoveView extends Component {
                 this.barrages[indexOfNewBarrrage] = [];
             }
             this.barrages[indexOfNewBarrrage].push(barrage);
-            this.setState({ list: this.barrages });
         }
+        this.setState({ list: this.barrages });
     }
 
     // 删除已经移动到屏幕外的数据

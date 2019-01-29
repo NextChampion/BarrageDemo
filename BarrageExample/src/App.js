@@ -5,7 +5,7 @@
  */
 
 import React, { Component } from 'react';
-import { StyleSheet, View, Text } from 'react-native';
+import { StyleSheet, View, ScrollView } from 'react-native';
 import BarrageMoveView from './components/BarrageMoveView';
 import BarrageInputView from './components/BarrageInputView';
 import UI from './UI';
@@ -81,13 +81,17 @@ export default class App extends Component {
     render() {
         console.debug('APP');
         return (
-            <View style={styles.container}>
+            <ScrollView 
+                style={{ flex: 1 }} 
+                contentContainerStyle={styles.container}
+                scrollEnabled={false}
+            >
                 <View style={styles.barrageView}>
                     <BarrageMoveView newMessages={this.state.data} numberOfLines={10} speed={1} />
                 </View>
                 <BarrageInputView onButtonPress={this.onButtonPress} />
                 <View style={{ flex: 1 }} />
-            </View>
+            </ScrollView>
         );
     }
 }

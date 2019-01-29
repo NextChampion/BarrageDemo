@@ -83,7 +83,7 @@ export default class BarrageMoveView extends Component {
                         DeviceEventEmitter.emit('onStateToOutsideScreen1', b);
                         continue;
                     }
-                    b.ref.view.setNativeProps({
+                    b.ref.setNativeProps({
                         style: {
                             left: newLeft,
                         }
@@ -101,10 +101,10 @@ export default class BarrageMoveView extends Component {
             if (indexOfNewBarrrage < 0) {
                 continue;
             }
-            const barrage = { 
-                ...message, 
-                indexOfLine: indexOfNewBarrrage, 
-                isFree: false, 
+            const barrage = {
+                ...message,
+                indexOfLine: indexOfNewBarrrage,
+                isFree: false,
                 position: { left: UI.size.screenWidth },
             };
             if (!this.barrages[indexOfNewBarrrage]) {
@@ -132,7 +132,7 @@ export default class BarrageMoveView extends Component {
         if (this.barrages.length === 0) {
             return 0;
         }
-        if (this.barrages[0].length === 0) {
+        if (!this.barrages[0] || this.barrages[0].length === 0) {
             return 0;
         }
         for (let i = 0; i < numberOfLines; i += 1) {
@@ -151,7 +151,7 @@ export default class BarrageMoveView extends Component {
         return -1;
     }
 
-    setRefs(a,index,innerIndex) {
+    setRefs(a, index, innerIndex) {
         if (a) { this.barrages[index][innerIndex].ref = a }
     }
 
@@ -163,7 +163,7 @@ export default class BarrageMoveView extends Component {
             barrragesOfLine.forEach((b, innerIndex) => {
                 const barrageItem = (
                     <BarrageItem
-                        ref={(a) => this.setRefs(a, index,innerIndex)}
+                        ref={(a) => this.setRefs(a, index, innerIndex)}
                         line={b.indexOfLine}
                         key={b.id}
                         data={b}

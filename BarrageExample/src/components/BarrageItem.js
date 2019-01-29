@@ -16,7 +16,7 @@ import UI from '../UI';
 
 const imageWidth = 20;
 
-export default class BarrageItem extends Component {
+export default class BarrageItem extends View {
     constructor(props) {
         super(props);
         this.position = UI.size.screenWidth;
@@ -56,7 +56,6 @@ export default class BarrageItem extends Component {
             <View
                 style={[styles.view, { top, width: this.width, left: this.position }]}
                 removeClippedSubviews={true}
-                ref={a => this.view = a}
             >
                 <Text>{title}</Text>
             </View>
@@ -72,7 +71,6 @@ export default class BarrageItem extends Component {
             <View
                 style={[styles.imageView, { top, width: this.width, left: this.position }]}
                 removeClippedSubviews={true}
-                ref={a => this.view = a}
             >
                 <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                     <Image style={styles.image} />

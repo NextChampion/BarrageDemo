@@ -105,7 +105,5 @@ const styles = StyleSheet.create({
     },
     barrageView: {
         flex: 1,
-        // height: UI.size.screenHeight / 2,
-        // borderWidth: 1,
     },
 });

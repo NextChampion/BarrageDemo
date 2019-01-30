@@ -63,7 +63,7 @@ export default class App extends Component {
         }, 100);
     }
 
-    onButtonPress = (text) => {
+    onSendButtonPress = (text) => {
         this.id = this.id + 1;
         const newData = [{ title: text, id: this.id }];
         this.setState({ data: newData });
@@ -89,7 +89,7 @@ export default class App extends Component {
                 <View style={styles.barrageView}>
                     <BarrageMoveView newMessages={this.state.data} numberOfLines={10} speed={1} />
                 </View>
-                <BarrageInputView onButtonPress={this.onButtonPress} />
+                <BarrageInputView onButtonPress={this.onSendButtonPress} />
                 <View style={{ flex: 1 }} />
             </ScrollView>
         );

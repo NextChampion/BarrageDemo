@@ -60,7 +60,7 @@ export default class App extends Component {
             const text = this.getText();
             const newData = [{ title: text, id: this.id }];
             this.setState({ data: newData });
-        }, 100);
+        }, 1000);
     }
 
     onSendButtonPress = (text) => {

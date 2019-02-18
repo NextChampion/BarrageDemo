@@ -14,7 +14,9 @@ import UI from '../UI';
 export default class BarrageInputView extends Component {
     constructor(props) {
         super(props);
-        this.textInput = '';
+        this.state = {
+            input: '',
+        }
     }
 
     static propTypes = {
@@ -29,17 +31,18 @@ export default class BarrageInputView extends Component {
         const { onButtonPress } = this.props;
         return (
             <View style={styles.textInputContainer}>
-                <TextInput placeholder={'请输入弹幕内容'} style={styles.textInput} onChangeText={(text) => {
-                    this.textInput = text.trim();
+                <TextInput value={this.state.input} placeholder={'请输入弹幕内容'} style={styles.textInput} onChangeText={(text) => {
+                    this.setState({ input: text.trim() })
                 }} />
                 <TouchableOpacity
                     onPress={() => {
-                        if (!this.textInput) {
+                        if (!this.state.input) {
                             Alert.alert('请输入内容');
                             return;
                         }
                         if (onButtonPress) {
-                            onButtonPress(this.textInput);
+                            onButtonPress(this.state.input);
+                            this.setState({ input: '' });
                         }
                     }}
                     style={styles.button}

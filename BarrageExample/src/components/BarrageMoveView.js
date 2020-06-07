@@ -39,7 +39,7 @@ export default class BarrageMoveView extends Component {
         this.startMove();
     };
 
-    componentWillReceiveProps(props) {
+    UNSAFE_componentWillReceiveProps(props) {
         const { newMessages } = props;
         this.addBarrageMessage(newMessages);
     }

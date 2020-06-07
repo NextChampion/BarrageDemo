@@ -65,7 +65,7 @@ export default class App extends Component {
 
     onSendButtonPress = (text) => {
         this.id = this.id + 1;
-        const newData = [{ title: text, id: this.id }];
+        const newData = [{ title: text, id: this.id, isMySelf: true }];
         this.setState({ data: newData });
     }
 

@@ -49,12 +49,12 @@ export default class BarrageItem extends View {
 
     renderTextType = () => {
         const { data } = this.props;
-        const { title } = data;
+        const { title, isMySelf } = data;
         this.width = UI.fontSize.regular * title.length;
         const top = this.getTop();
         return (
             <View
-                style={[styles.view, { top, width: this.width, left: this.position }]}
+                style={[styles.view, { top, width: this.width, left: this.position }, isMySelf && { borderWidth: 1 }]}
                 removeClippedSubviews={true}
             >
                 <Text>{title}</Text>
@@ -64,7 +64,7 @@ export default class BarrageItem extends View {
 
     renderImageType = () => {
         const { data } = this.props;
-        const { title } = data;
+        const { title, isMySelf } = data;
         this.width = UI.fontSize.regular * title.length + imageWidth;
         const top = this.getTop();
         return (
@@ -72,7 +72,7 @@ export default class BarrageItem extends View {
                 style={[styles.imageView, { top, width: this.width, left: this.position }]}
                 removeClippedSubviews={true}
             >
-                <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                <View style={[{ flexDirection: 'row', alignItems: 'center' }, isMySelf && { borderWidth: 1, borderColor: 'green' }]}>
                     <Image style={styles.image} />
                     <Text>{title}</Text>
                 </View>
